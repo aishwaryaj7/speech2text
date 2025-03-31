@@ -1,0 +1,18 @@
+[project]
+name = "speech2text"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "httplib2>=0.22.0",
+    "librosa>=0.11.0",
+    "pyannote-audio>=3.3.2",
+    "pyannote-core>=5.0.0",
+    "pydub>=0.25.1",
+    "sentencepiece>=0.2.0",
+    "streamlit>=1.44.0",
+    "tokenizers>=0.21.1",
+    "torchaudio>=2.6.0",
+    "transformers>=4.50.3",
+    "youtube-dl>=2021.12.17",
+]
