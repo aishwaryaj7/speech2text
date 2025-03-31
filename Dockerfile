@@ -1,16 +1,12 @@
-FROM ubuntu:latest
-LABEL authors="ajsharma"
-
-ENTRYPOINT ["top", "-b"]
+FROM python:3.8
 
 WORKDIR /workspace
 ADD . /workspace
 
-RUN apt-get update && apt-get install -y ffmpeg libsndfile1-dev curl
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-RUN uv pip install -e .
+RUN apt-get update && apt-get install -y ffmpeg libsndfile1-dev
+RUN pip install -r requirements.txt
 
-CMD [ "streamlit" , "run" , "/workspace/src/speech2text/main.py", "--server.address=0.0.0.0" ]
+CMD [ "streamlit" , "run" , "/workspace/main.py", "--server.address=0.0.0.0" ]
 
 RUN mkdir /data ; chown -R 42420:42420 /workspace /data
 

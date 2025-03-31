@@ -19,9 +19,20 @@ from transformers import Wav2Vec2Processor, HubertForCTC
 @st.cache_resource()
 def load_models():
     # Load Wav2Vec2 (Transcriber model)
-    print("Loading pre-trained models.")
-    stt_model = HubertForCTC.from_pretrained("facebook/hubert-large-ls960-ft")
-    stt_tokenizer = Wav2Vec2Processor.from_pretrained("facebook/hubert-large-ls960-ft")
+
+    with st.spinner("Loading Speech to Text Model"):
+        # If models are stored in a folder, we import them. Otherwise, we import the models with their respective library
+
+        try:
+            # Load the processor (tokenizer) using torch.load
+            stt_tokenizer = torch.load("models/STT_processor_hubert-large-ls960-ft.pth")
+        except FileNotFoundError:
+            stt_tokenizer = Wav2Vec2Processor.from_pretrained("facebook/hubert-large-ls960-ft")
+
+        try:
+            stt_model = torch.load("models/STT_model_hubert-large-ls960-ft.pth")
+        except FileNotFoundError:
+            stt_model = HubertForCTC.from_pretrained("facebook/hubert-large-ls960-ft")
 
     return stt_tokenizer, stt_model
 
