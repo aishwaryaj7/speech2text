@@ -14,25 +14,15 @@ DATA_DIR = Path.cwd().joinpath("data")
 import streamlit as st
 from pathlib import Path
 from transformers import Wav2Vec2Processor, HubertForCTC
+from huggingface_hub import snapshot_download
 
 
-@st.cache_resource()
+@st.cache_resource
 def load_models():
+    model_dir = snapshot_download("facebook/hubert-large-ls960-ft")
     # Load Wav2Vec2 (Transcriber model)
-
-    with st.spinner("Loading Speech to Text Model"):
-        # If models are stored in a folder, we import them. Otherwise, we import the models with their respective library
-
-        try:
-            # Load the processor (tokenizer) using torch.load
-            stt_tokenizer = torch.load("models/STT_processor_hubert-large-ls960-ft.pth")
-        except FileNotFoundError:
-            stt_tokenizer = Wav2Vec2Processor.from_pretrained("facebook/hubert-large-ls960-ft")
-
-        try:
-            stt_model = torch.load("models/STT_model_hubert-large-ls960-ft.pth")
-        except FileNotFoundError:
-            stt_model = HubertForCTC.from_pretrained("facebook/hubert-large-ls960-ft")
+    stt_model = HubertForCTC.from_pretrained(model_dir)
+    stt_tokenizer = Wav2Vec2Processor.from_pretrained(model_dir)
 
     return stt_tokenizer, stt_model
 
@@ -60,8 +50,6 @@ def clean_directory(path):
         file.unlink()
 
 
-
-
 def init_transcription(start, end):
     st.write("Transcription between", start, "and", end, "seconds in process.\n\n")
     txt_text = ""
@@ -69,9 +57,11 @@ def init_transcription(start, end):
     save_result = []
     return txt_text, srt_text, save_result
 
-def display_transcription(transcription, save_result, txt_text, srt_text, sub_start, sub_end):
 
-    temp_timestamps = str(timedelta(milliseconds=sub_start)).split(".")[0] + " --> " + str(timedelta(milliseconds=sub_end)).split(".")[0] + "\n"
+def display_transcription(transcription, save_result, txt_text, srt_text, sub_start,
+                          sub_end):
+    temp_timestamps = str(timedelta(milliseconds=sub_start)).split(".")[0] + " --> " + \
+                      str(timedelta(milliseconds=sub_end)).split(".")[0] + "\n"
     temp_list = [temp_timestamps, transcription, int(sub_start / 1000)]
     save_result.append(temp_list)
     st.write(temp_timestamps)
@@ -79,6 +69,7 @@ def display_transcription(transcription, save_result, txt_text, srt_text, sub_st
     txt_text += transcription + " "  # So x seconds sentences are separated
 
     return save_result, txt_text, srt_text
+
 
 def transcribe_audio_part(filename, stt_model, stt_tokenizer, myaudio, sub_start,
                           sub_end, index):
