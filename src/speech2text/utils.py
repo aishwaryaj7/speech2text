@@ -333,7 +333,7 @@ def transcription(stt_tokenizer, stt_model, filename, uploaded_file=None):
                 update_session_state("process", save_result)
 
                 # Clean up temp files
-                clean_directory("../../data")
+                # clean_directory("../../data")
 
                 # Display results
                 if txt_text:
