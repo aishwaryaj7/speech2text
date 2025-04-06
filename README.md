@@ -29,3 +29,6 @@ Watch a demo in the app, upload a file, and receive a clean, downloadable transc
 - 📦 Streamlit for interactive UI
 - 🎧 Torchaudio + Librosa + Pydub for preprocessing
 
+### Demo
+
+https://youtu.be/eSG_FsoUtRo
