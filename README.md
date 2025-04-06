@@ -1,5 +1,8 @@
 # 🎤 Speech-to-Text Transcriber
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://aishwaryaj7-speech2text.streamlit.app/)
+
+
 A simple and powerful Streamlit web app that transcribes speech from audio/video files using state-of-the-art transformer models from Hugging Face 🤗.
 
 Watch a demo in the app, upload a file, and receive a clean, downloadable transcript — all in your browser!
